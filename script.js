@@ -226,17 +226,24 @@ document.addEventListener('DOMContentLoaded', () => {
             validateField(subject, 'subjectError', 'Subject is required.', subject.value.trim() === '');
             validateField(message, 'messageError', 'Message cannot be empty.', message.value.trim() === '');
 
-            // Mock Submit
+            // WhatsApp Submit
             if (isValid) {
                 const btn = contactForm.querySelector('button');
                 const originalText = btn.innerHTML;
                 
-                btn.innerHTML = '<span>Sending...</span> <i class="fas fa-spinner fa-spin"></i>';
+                btn.innerHTML = '<span>Redirecting...</span> <i class="fas fa-spinner fa-spin"></i>';
                 btn.disabled = true;
                 
-                // Simulate network request
+                // Construct WhatsApp message
+                const phone = "917054434017";
+                const whatsappMsg = `Hello Shreya! 👋%0A%0AI am ${name.value.trim()} (${email.value.trim()}).%0A%0A*Subject:* ${subject.value.trim()}%0A*Message:* ${message.value.trim()}`;
+                const whatsappUrl = `https://wa.me/${phone}?text=${whatsappMsg}`;
+
                 setTimeout(() => {
-                    btn.innerHTML = '<span>Sent Successfully!</span> <i class="fas fa-check"></i>';
+                    // Open WhatsApp in new tab
+                    window.open(whatsappUrl, '_blank');
+                    
+                    btn.innerHTML = '<span>Message Ready!</span> <i class="fas fa-check"></i>';
                     btn.style.background = '#00c853';
                     
                     contactForm.reset();
@@ -248,7 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         btn.style.background = '';
                     }, 3000);
                     
-                }, 1500);
+                }, 800);
             }
         });
     }
